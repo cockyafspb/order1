@@ -4,18 +4,16 @@
 #include <iostream>
 #include <fstream>
 
+struct ListNode {
+    int data;
+    ListNode *next;
+    ListNode *prev;
+
+    explicit ListNode(int data = int(), ListNode *next = nullptr, ListNode *prev = nullptr);
+};
+
 class List {
 private:
-    struct ListNode {
-        int data;
-        ListNode *next;
-        ListNode *prev;
-
-        explicit ListNode(int data = int(), ListNode *next = nullptr, ListNode *prev = nullptr) : data(data),
-                                                                                                  next(next),
-                                                                                                  prev(prev) {}
-    };
-
     ListNode head;
     ListNode tail;
     size_t size = 0;
