@@ -69,7 +69,7 @@ List &List::operator=(List &&Lst) noexcept {
 }
 
 bool List::IsEmpty() const {
-    if (!size)
+    if (head.next == &tail)
         return true;
     return false;
 }
@@ -83,29 +83,25 @@ void List::Add(int Val) {
 }
 
 List::~List() {
-    auto *ptr = tail.prev;
-    while (!IsEmpty()) {
-        auto *tmp = ptr->prev;
-        delete ptr;
-        ptr = tmp;
-        tmp = nullptr;
-        --size;
-    }
-    ptr = nullptr;
-    head.next = &tail;
-    tail.prev = &head;
+    Clear();
     std::cout << "List::~List()" << std::endl;
 }
 
 void List::Clear() {
-    this->~List();
+    while (!IsEmpty()) {
+        auto *ptr = head.next;
+        head.next = ptr->next;
+        head.next->prev = &head;
+        delete ptr;
+        ptr = nullptr;
+    }
 }
 
 void List::AddAfter(int Val, unsigned int Pos) {
-    if (Pos > size) {
+    if (Pos >= size) {
         Add(Val);
     } else {
-        size_t counter = 1;
+        size_t counter = 0;
         auto *ptr = head.next;
         while (counter != Pos) {
             ++counter;
@@ -123,14 +119,14 @@ void List::AddAfter(int Val, unsigned int Pos) {
 void List::AddBefore(int Val, unsigned int Pos) {
     if (Pos > size) {
         Add(Val);
-    } else if (Pos == 1) {
+    } else if (Pos == 0) {
         auto ptr = new ListNode(Val, head.next, &head);
         head.next->prev = ptr;
         head.next = ptr;
         ptr = nullptr;
         ++size;
     } else {
-        size_t counter = 1;
+        size_t counter = 0;
         auto *ptr = head.next;
         while (counter != Pos - 1) {
             ++counter;
@@ -226,10 +222,4 @@ std::ifstream &operator>>(std::ifstream &File, List &Lst){
     return File;
 }
 
-
-
-
-
-
-
-
+ListNode::ListNode(int data, ListNode *next, ListNode *prev) : data(data), next(next), prev(prev) {}
