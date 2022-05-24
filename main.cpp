@@ -32,8 +32,8 @@ bool RestorePasswd(size_t HashValue, int MaxLength, char *Result, int *ResLength
 
 int main() {
     char Password[50] = "";
-    int length = 50;
-    size_t hash = Hash("AAA", 3);
+    int length = 0;
+    size_t hash = 0x015BC00C;
     bool res = RestorePasswd(hash, 50, Password, &length);
 
     if (res) {
